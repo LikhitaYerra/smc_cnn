@@ -252,6 +252,32 @@ This script runs:
 
 ---
 
+## Extended Multi-Controller Experiments
+
+To run the full benchmark (classical, fuzzy-SMC, CNN-adaptive, oracle, and RL-adaptive controllers) plus realistic-map CNN training:
+
+```bash
+./run_major_experiments.sh
+```
+
+To regenerate metrics, plots, and the project report PDF:
+
+```bash
+./generate_report.sh
+```
+
+New modules include:
+
+- `src/simulation/run_episode.py` — shared simulation loop
+- `src/controllers/fuzzy_smc_controller.py` — fuzzy gain scheduling baseline
+- `src/controllers/rl_adaptive_smc_controller.py` — PPO preset selector
+- `src/rl/smc_parameter_env.py` — RL training environment
+- `src/data_generation/realistic_map_generator.py` — cluttered occupancy maps
+- `src/cnn/train_realistic_cnn.py` — retrain CNN on realistic maps
+- `src/evaluation/compare_all_controllers.py` — multi-controller metrics
+
+---
+
 ## Manual Commands
 
 ### Generate CNN Dataset
