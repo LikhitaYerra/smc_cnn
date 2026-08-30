@@ -37,3 +37,23 @@ disturbance:
   start_time: 8.0
   duration: 1.0
   force_level: 0.2
+
+rl:
+  algorithm: "PPO"
+  learning_rate: 0.0003
+  gamma: 0.99
+  gae_lambda: 0.95
+  clip_eps: 0.2
+  rollout_steps: 2048
+  training_iterations: 100
+  model_path: "models/rl_smc_agent.pt"
+  reward:
+    alpha: 10.0
+    beta: 0.05
+    gamma: 0.1
+
+digital_twin:
+  api_host: "0.0.0.0"
+  api_port: 8000
+  frontend_port: 5173
+  default_controller: "cnn_adaptive"

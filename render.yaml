@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: smc-digital-twin
+    runtime: docker
+    plan: starter
+    region: frankfurt
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"

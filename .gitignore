@@ -25,13 +25,11 @@ data/generated/
 # Results
 results/
 
-# Saved models
+# Saved models (keep deployment weights in repo)
 models/*.pt
+!models/cnn_environment_classifier.pt
+!models/rl_smc_agent.pt
 models/*.pth
 
 # Logs
 *.log
-# External/raw real datasets
-data/external/
-data/real_raw/
-data/real_processed/

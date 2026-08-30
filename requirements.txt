@@ -9,6 +9,8 @@ tqdm
 pyyaml
 opencv-python
 pillow
-pybullet
 gymnasium
-stable-baselines3
+fastapi
+uvicorn[standard]
+websockets
+pydantic

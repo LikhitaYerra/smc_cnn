@@ -1,6 +1,30 @@
 # CNN-Adaptive Sliding Mode Control for Autonomous Robots
 
-## Project Overview
+## Digital Twin (Live Demo)
+
+### Run locally
+
+```bash
+# Build frontend once
+cd frontend && npm install && npm run build && cd ..
+
+# Start API + UI on http://localhost:8000
+python run_digital_twin.py
+```
+
+### Deploy on Render
+
+This repo includes a `render.yaml` blueprint and `Dockerfile` for one-click deployment:
+
+1. Push this repo to GitHub.
+2. In [Render Dashboard](https://dashboard.render.com/) → **New** → **Blueprint** → connect `LikhitaYerra/smc_cnn`.
+3. Render builds the React frontend, installs Python dependencies, and serves the app on a public URL.
+
+Or deploy manually: **New Web Service** → Docker → select this repo.
+
+The live app exposes REST + WebSocket endpoints at `/api/*` and `/ws/simulation`.
+
+---
 
 This project implements and evaluates a **CNN-adaptive Sliding Mode Controller** for a differential-drive autonomous mobile robot.
 
