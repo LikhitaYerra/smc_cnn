@@ -342,6 +342,7 @@ class SimulationEngine:
                 from src.rl.rl_adapter import RLParameterAdapter
 
             self._rl_adapter = RLParameterAdapter()
+            self._controller.parameter_filter.alpha = 0.92
 
     def _setup_disturbances(self, cfg: SimulationConfig):
         self._noise = SensorNoise(position_std=0.02, theta_std=0.01, seed=42)
@@ -366,7 +367,7 @@ class SimulationEngine:
             return self._controller.parameter_filter.previous_params
 
         if mode == "rl_agent" and self._rl_adapter:
-            if step % int(0.5 / dt) == 0:
+            if step % int(2.0 / dt) == 0:
                 obs = self._rl_adapter.build_observation(
                     x, y, theta,
                     float(self._x_d[step]),

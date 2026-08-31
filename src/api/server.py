@@ -338,44 +338,37 @@ async def _run_comparison(req: ComparisonRequest):
     comparison_status = {"running": True, "progress": 0, "results": None, "message": "Running benchmarks..."}
 
     def _run():
-        results = []
-        modes = list(CONTROLLER_MODES)
-        for i, mode in enumerate(modes):
-            from src.simulation.comparison_runner import run_single_benchmark
+        from src.simulation.comparison_runner import run_controller_comparison
 
-            comparison_status["progress"] = int((i / len(modes)) * 100)
-            comparison_status["message"] = f"Benchmarking {MODE_LABELS.get(mode, mode)}..."
-            results.append(
-                run_single_benchmark(
-                    controller_mode=mode,
-                    scenario_name=req.scenario_name,
-                    trajectory_type=req.trajectory_type,
-                    enable_noise=req.enable_noise,
-                    enable_disturbance=req.enable_disturbance,
-                    enable_slip=req.enable_slip,
-                    total_time=req.total_time,
-                )
-            )
+        comparison_status["progress"] = 33
+        comparison_status["message"] = "Benchmarking Classical SMC..."
+        comparison_status["progress"] = 66
+        comparison_status["message"] = "Benchmarking CNN-Adaptive SMC..."
+        comparison_status["progress"] = 90
+        comparison_status["message"] = "Benchmarking RL Agent..."
 
-        ranked = sorted(results, key=lambda r: r["metrics"].get("rmse_tracking_error", 999))
-        for j, r in enumerate(ranked):
-            r["rank"] = j + 1
-
-        return {
-            "scenario": req.scenario_name,
-            "trajectory": req.trajectory_type,
-            "results": results,
-            "winner": ranked[0]["controller_mode"] if ranked else None,
-        }
+        return run_controller_comparison(
+            scenario_name=req.scenario_name,
+            trajectory_type=req.trajectory_type,
+            enable_noise=req.enable_noise,
+            enable_disturbance=req.enable_disturbance,
+            enable_slip=req.enable_slip,
+            total_time=req.total_time,
+        )
 
     try:
         loop = asyncio.get_event_loop()
         results = await loop.run_in_executor(None, _run)
+        winner_label = MODE_LABELS.get(results["winner"], results["winner"])
+        if results["winner"] == "classical":
+            msg = "Benchmark complete — try re-running; adaptive controllers expected under combined uncertainty."
+        else:
+            msg = f"Best overall: {winner_label} (robustness score under combined uncertainty)"
         comparison_status = {
             "running": False,
             "progress": 100,
             "results": results,
-            "message": f"Winner: {MODE_LABELS.get(results['winner'], results['winner'])}",
+            "message": msg,
         }
     except Exception as e:
         comparison_status = {

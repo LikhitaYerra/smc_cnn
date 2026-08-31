@@ -180,7 +180,7 @@ export function useSimulation() {
       body: JSON.stringify({
         scenario_name: 'combined', trajectory_type: 'straight',
         enable_noise: true, enable_disturbance: true, enable_slip: true,
-        total_time: 8.0, ...opts,
+        total_time: 15.0, ...opts,
       }),
     })
     showToast('Running controller comparison...', 'info')

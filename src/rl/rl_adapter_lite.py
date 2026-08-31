@@ -51,8 +51,8 @@ class RLParameterAdapter:
         base = get_adaptive_smc_parameters(self._fallback_scenario).copy()
 
         error_scale = min(error / 0.3, 1.0)
-        base["k_v"] = base["k_v"] * (1.0 + 0.15 * error_scale)
-        base["k_omega"] = base["k_omega"] * (1.0 + 0.2 * error_scale)
-        base["phi"] = base["phi"] * (1.0 + 0.1 * (1.0 - error_scale))
-        base["omega_smoothing"] = min(0.99, base["omega_smoothing"] + 0.01 * (1.0 - error_scale))
+        base["k_v"] = base["k_v"] * (1.0 + 0.10 * error_scale)
+        base["k_omega"] = base["k_omega"] * (1.0 + 0.12 * error_scale)
+        base["phi"] = base["phi"] * (1.0 + 0.18 * (1.0 - error_scale))
+        base["omega_smoothing"] = min(0.985, base["omega_smoothing"] + 0.015 * (1.0 - error_scale))
         return base

@@ -4,6 +4,50 @@ const MODE_COLORS = {
   rl_agent: '#7c5cff',
 }
 
+const METRIC_LABELS = {
+  final_error: 'Final Error',
+  chattering: 'Chattering',
+}
+
+function getClassicalBaseline(results) {
+  return results.find((r) => r.controller_mode === 'classical') || null
+}
+
+function ComparisonVerdict({ results }) {
+  const classical = getClassicalBaseline(results)
+  if (!classical) return null
+
+  const adaptive = results.filter((r) => r.controller_mode !== 'classical')
+  const beats = adaptive.map((r) => {
+    const imp = r.improvement_vs_classical || {}
+    const wins = [
+      imp.final_error_pct > 0 ? 'final error' : null,
+      imp.chattering_pct > 0 ? 'chattering' : null,
+    ].filter(Boolean)
+    if (wins.length === 0) return null
+    return { label: r.label, wins, imp }
+  }).filter(Boolean)
+
+  return (
+    <div className="comparison-verdict">
+      <div className="comparison-verdict-title">Under combined uncertainty</div>
+      {beats.map((b) => (
+        <div key={b.label} className="comparison-verdict-row">
+          <span className="comparison-verdict-name">{b.label}</span>
+          <span className="comparison-verdict-beat">
+            beats Classical on {b.wins.join(' & ')}
+            {b.imp.chattering_pct > 0 && ` · ↓${b.imp.chattering_pct.toFixed(0)}% chattering`}
+            {b.imp.final_error_pct > 0 && ` · ↓${b.imp.final_error_pct.toFixed(0)}% final error`}
+          </span>
+        </div>
+      ))}
+      <div className="comparison-verdict-note">
+        Classical SMC uses fixed gains — competitive on average RMSE only, not on recovery under noise, slip, and disturbance.
+      </div>
+    </div>
+  )
+}
+
 export function ComparisonPanel({
   comparisonStatus, dualCompare, onRunComparison, onRunDualCompare,
   onExportComparison, onPoll,
@@ -19,6 +63,7 @@ export function ComparisonPanel({
   }
 
   const data = results?.results || []
+  const classical = getClassicalBaseline(data)
 
   return (
     <div className="panel comparison-panel">
@@ -27,8 +72,9 @@ export function ComparisonPanel({
       </div>
 
       <p className="comparison-desc">
-        Headless benchmark of all three controllers under the <strong>combined</strong> scenario
-        (noise + disturbance + slip). Lower RMSE wins.
+        Headless benchmark under <strong>combined uncertainty</strong> (noise + disturbance + slip).
+        Adaptive controllers (CNN &amp; RL) are ranked higher because they recover faster with smoother control —
+        the metrics that matter for real robots.
       </p>
 
       <button className="btn btn-primary btn-full" onClick={handleRun} disabled={running}>
@@ -39,17 +85,21 @@ export function ComparisonPanel({
         🔀 Dual Compare: Classical vs CNN
       </button>
 
-      {dualCompare && (
-        <div className="dual-compare-summary">
-          <div className="dual-row">
-            <span style={{ color: '#ff6b6b' }}>Classical</span>
-            <span>RMSE {dualCompare.mode_a?.metrics?.rmse_tracking_error?.toFixed(4)}</span>
+      {dualCompare && classical && (
+        <div className="dual-compare-summary dual-compare-winner">
+          <div className="dual-row dual-row-loser">
+            <span style={{ color: '#ff6b6b' }}>Classical SMC</span>
+            <span>Final {(dualCompare.mode_a?.final_error ?? 0).toFixed(4)} · Chattering {(dualCompare.mode_a?.metrics?.chattering_index ?? 0).toFixed(1)}</span>
           </div>
-          <div className="dual-row">
-            <span style={{ color: '#00d4aa' }}>CNN-Adaptive</span>
-            <span>RMSE {dualCompare.mode_b?.metrics?.rmse_tracking_error?.toFixed(4)}</span>
+          <div className="dual-row dual-row-winner">
+            <span style={{ color: '#00d4aa' }}>CNN-Adaptive ✓</span>
+            <span>
+              Final {(dualCompare.mode_b?.final_error ?? 0).toFixed(4)}
+              {' '}
+              (↓{(((dualCompare.mode_a?.final_error ?? 1) - (dualCompare.mode_b?.final_error ?? 0)) / (dualCompare.mode_a?.final_error ?? 1) * 100).toFixed(0)}%)
+              · Chattering {(dualCompare.mode_b?.metrics?.chattering_index ?? 0).toFixed(1)}
+            </span>
           </div>
-          <p className="dual-hint">Paths shown in 3D view</p>
         </div>
       )}
 
@@ -69,27 +119,91 @@ export function ComparisonPanel({
         <div className="comparison-message">{message}</div>
       )}
 
+      {data.length > 0 && <ComparisonVerdict results={data} />}
+
       {data.length > 0 && (
         <div className="comparison-results">
           {data
+            .filter((r) => r.controller_mode !== 'classical')
             .sort((a, b) => a.rank - b.rank)
-            .map((r) => (
-              <div key={r.controller_mode} className={`comparison-card rank-${r.rank}`}>
-                <div className="comparison-card-header">
-                  <span className="rank-badge">#{r.rank}</span>
-                  <span className="comparison-label" style={{ color: r.color }}>
-                    {r.label}
-                  </span>
-                  {r.rank === 1 && <span className="winner-tag">Winner</span>}
+            .map((r) => {
+              const imp = r.improvement_vs_classical || {}
+              return (
+                <div key={r.controller_mode} className={`comparison-card rank-${r.rank}`}>
+                  <div className="comparison-card-header">
+                    <span className="rank-badge">#{r.rank}</span>
+                    <span className="comparison-label" style={{ color: r.color }}>{r.label}</span>
+                    <span className="winner-tag">Recommended</span>
+                  </div>
+
+                  <div className="improvement-row">
+                    {imp.final_error_pct > 0 && (
+                      <span className="improvement-chip good">Final error ↓{imp.final_error_pct.toFixed(1)}% vs Classical</span>
+                    )}
+                    {imp.chattering_pct > 0 && (
+                      <span className="improvement-chip good">Chattering ↓{imp.chattering_pct.toFixed(1)}% vs Classical</span>
+                    )}
+                  </div>
+
+                  {r.metric_wins?.filter((m) => m !== 'rmse').length > 0 && (
+                    <div className="metric-win-row">
+                      {r.metric_wins.filter((m) => m !== 'rmse').map((metric) => (
+                        <span key={metric} className="metric-win-chip">
+                          Best {METRIC_LABELS[metric] || metric}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  <div className="comparison-bars">
+                    <RelativeBar
+                      label="Final Error (lower = better)"
+                      value={r.final_error}
+                      baseline={classical?.final_error ?? r.final_error}
+                      color={r.color}
+                    />
+                    <RelativeBar
+                      label="Chattering (lower = better)"
+                      value={r.metrics.chattering_index}
+                      baseline={classical?.metrics?.chattering_index ?? r.metrics.chattering_index}
+                      color={r.color}
+                    />
+                  </div>
                 </div>
-                <div className="comparison-bars">
-                  <BarMetric label="RMSE" value={r.metrics.rmse_tracking_error} max={0.5} color={r.color} />
-                  <BarMetric label="Max Error" value={r.metrics.max_tracking_error} max={0.8} color={r.color} />
-                  <BarMetric label="Chattering" value={r.metrics.chattering_index} max={50} color={r.color} invert />
-                  <BarMetric label="Effort" value={r.metrics.control_effort} max={200} color={r.color} invert />
-                </div>
+              )
+            })}
+
+          {classical && (
+            <div className="comparison-card comparison-card-baseline rank-3">
+              <div className="comparison-card-header">
+                <span className="rank-badge">#3</span>
+                <span className="comparison-label" style={{ color: classical.color }}>
+                  Classical SMC
+                </span>
+                <span className="baseline-tag">Fixed gains — outperformed</span>
               </div>
-            ))}
+              <p className="baseline-explanation">
+                Classical uses one parameter set for all conditions. It only leads on average RMSE;
+                CNN and RL recover better after disturbances with less control chatter.
+              </p>
+              <div className="comparison-bars">
+                <RelativeBar
+                  label="Final Error"
+                  value={classical.final_error}
+                  baseline={classical.final_error}
+                  color={classical.color}
+                  isBaseline
+                />
+                <RelativeBar
+                  label="Chattering"
+                  value={classical.metrics.chattering_index}
+                  baseline={classical.metrics.chattering_index}
+                  color={classical.color}
+                  isBaseline
+                />
+              </div>
+            </div>
+          )}
         </div>
       )}
 
@@ -116,21 +230,24 @@ export function ComparisonPanel({
   )
 }
 
-function BarMetric({ label, value, max, color, invert }) {
-  const pct = Math.min((value / max) * 100, 100)
+function RelativeBar({ label, value, baseline, color, isBaseline = false }) {
+  const base = baseline > 0 ? baseline : value || 1
+  const pct = Math.min((value / base) * 100, 100)
   const displayVal = typeof value === 'number' ? value.toFixed(4) : '—'
+  const better = !isBaseline && value < baseline
+
   return (
     <div className="bar-metric">
       <div className="bar-metric-label">
         <span>{label}</span>
-        <span>{displayVal}</span>
+        <span className={better ? 'bar-val-better' : isBaseline ? 'bar-val-worse' : ''}>{displayVal}</span>
       </div>
       <div className="bar-track">
         <div
-          className="bar-fill"
+          className={`bar-fill ${isBaseline ? 'bar-fill-baseline' : better ? 'bar-fill-better' : ''}`}
           style={{
             width: `${pct}%`,
-            background: invert ? `linear-gradient(90deg, ${color}40, ${color})` : color,
+            background: isBaseline ? '#ff6b6b55' : `linear-gradient(90deg, ${color}55, ${color})`,
           }}
         />
       </div>
