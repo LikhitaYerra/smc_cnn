@@ -1,0 +1,101 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{utkin1992}
+\citation{edwards1998}
+\citation{utkin1992}
+\citation{shtessel2014}
+\citation{slotine1991}
+\citation{edwards1998}
+\citation{edwards1998}
+\citation{slotine1991}
+\citation{lin2006}
+\citation{ge2004}
+\citation{nguyen2018}
+\citation{liberzon2003}
+\citation{lecun2015}
+\citation{levine2016}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{2}{section.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.1}Problem Statement}{2}{subsection.1.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {1.2}Literature Review}{2}{subsection.1.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Sliding Mode Control for Mobile Robots.}{2}{section*.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Learning-Based Gain Adaptation.}{2}{section*.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{CNN-Based Supervisory Control.}{2}{section*.5}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces System architecture: the CNN-adaptive SMC pipeline (top) and the PPO reinforcement-learning alternative (bottom), both integrated into the 3D digital twin.}}{3}{figure.caption.2}\protected@file@percent }
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{fig:architecture}{{1}{3}{System architecture: the CNN-adaptive SMC pipeline (top) and the PPO reinforcement-learning alternative (bottom), both integrated into the 3D digital twin}{figure.caption.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{Digital Twins.}{3}{section*.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}Methodology}{3}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Differential-Drive Robot Model}{3}{subsection.2.1}\protected@file@percent }
+\newlabel{eq:kinematics}{{1}{3}{Differential-Drive Robot Model}{equation.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Classical Sliding Mode Controller}{3}{subsection.2.2}\protected@file@percent }
+\newlabel{eq:surfaces}{{2}{3}{Classical Sliding Mode Controller}{equation.2}{}}
+\citation{shtessel2014}
+\newlabel{eq:vc}{{3}{4}{Classical Sliding Mode Controller}{equation.3}{}}
+\newlabel{eq:omega}{{4}{4}{Classical Sliding Mode Controller}{equation.4}{}}
+\newlabel{eq:smoother}{{5}{4}{Classical Sliding Mode Controller}{equation.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}CNN Environment Classifier}{4}{subsection.2.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Dataset.}{4}{section*.7}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Sample synthetic environment maps (one per class). Each $64{\times }64$ grayscale image encodes a distinct visual signature used for CNN classification.}}{4}{figure.caption.8}\protected@file@percent }
+\newlabel{fig:cnnsamples}{{2}{4}{Sample synthetic environment maps (one per class). Each $64{\times }64$ grayscale image encodes a distinct visual signature used for CNN classification}{figure.caption.8}{}}
+\@writefile{toc}{\contentsline {paragraph}{Architecture (EnvironmentCNN).}{4}{section*.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Adaptive Parameter Selection}{4}{subsection.2.4}\protected@file@percent }
+\newlabel{eq:filter}{{6}{4}{Adaptive Parameter Selection}{equation.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Scenario-specific SMC parameter sets.}}{5}{table.caption.10}\protected@file@percent }
+\newlabel{tab:presets}{{1}{5}{Scenario-specific SMC parameter sets}{table.caption.10}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.5}Reinforcement Learning Baseline (PPO)}{5}{subsection.2.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.6}Stability Analysis}{5}{subsection.2.6}\protected@file@percent }
+\newlabel{eq:lyapunov}{{7}{5}{Stability Analysis}{equation.7}{}}
+\newlabel{eq:vdot}{{8}{5}{Stability Analysis}{equation.8}{}}
+\newlabel{eq:uub}{{9}{5}{Stability Analysis}{equation.9}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.7}Evaluation Protocol}{5}{subsection.2.7}\protected@file@percent }
+\citation{ran2024}
+\citation{demirtas2024}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Results}{6}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}CNN Classification}{6}{subsection.3.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Classifier accuracy: simple vs.\ realistic maps (\%).}}{6}{table.caption.11}\protected@file@percent }
+\newlabel{tab:classifiers}{{2}{6}{Classifier accuracy: simple vs.\ realistic maps (\%)}{table.caption.11}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Trajectory and Tracking Performance}{6}{subsection.3.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Quantitative Comparison}{6}{subsection.3.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Robot trajectories under combined uncertainty (noise + disturbance + slip) for all three controllers. The impulsive push at $t = 8$\,s ($x \approx 2.4$\,m) and the subsequent recovery are clearly visible; the adaptive controllers return to the reference more tightly than classical SMC.}}{7}{figure.caption.12}\protected@file@percent }
+\newlabel{fig:trajectory}{{3}{7}{Robot trajectories under combined uncertainty (noise + disturbance + slip) for all three controllers. The impulsive push at $t = 8$\,s ($x \approx 2.4$\,m) and the subsequent recovery are clearly visible; the adaptive controllers return to the reference more tightly than classical SMC}{figure.caption.12}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Tracking error over the full 20\,s episode under combined uncertainty. The disturbance impulse at $t = 8$\,s and the slip window $t \in [10, 14]$\,s are visible; the adaptive controllers decay faster after each perturbation.}}{7}{figure.caption.13}\protected@file@percent }
+\newlabel{fig:trackingerror}{{4}{7}{Tracking error over the full 20\,s episode under combined uncertainty. The disturbance impulse at $t = 8$\,s and the slip window $t \in [10, 14]$\,s are visible; the adaptive controllers decay faster after each perturbation}{figure.caption.13}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Discussion}{7}{subsection.3.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Alternative adaptive controllers.}{7}{section*.21}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Absolute controller metrics per scenario.}}{8}{table.caption.14}\protected@file@percent }
+\newlabel{tab:absolute}{{3}{8}{Absolute controller metrics per scenario}{table.caption.14}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces CNN-adaptive improvement over classical SMC (\%). $^{\dagger }$Under noise the final error increases in absolute terms (43.7\,mm $\to $ 100.8\,mm); this is the intentional smoothness--accuracy trade-off of Eq.~\eqref  {eq:uub}, not a regression.}}{8}{table.caption.15}\protected@file@percent }
+\newlabel{tab:improvement}{{4}{8}{CNN-adaptive improvement over classical SMC (\%). $^{\dagger }$Under noise the final error increases in absolute terms (43.7\,mm $\to $ 100.8\,mm); this is the intentional smoothness--accuracy trade-off of Eq.~\eqref {eq:uub}, not a regression}{table.caption.15}{}}
+\@writefile{toc}{\contentsline {paragraph}{Per-scenario analysis.}{8}{section*.22}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Computational considerations.}{8}{section*.23}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}Digital Twin Demonstration}{8}{subsection.3.5}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Multi-controller comparison (selected metrics).}}{9}{table.caption.16}\protected@file@percent }
+\newlabel{tab:multicontroller}{{5}{9}{Multi-controller comparison (selected metrics)}{table.caption.16}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces RMSE tracking error across all five operating scenarios (values from Table~\ref {tab:absolute}).}}{9}{figure.caption.17}\protected@file@percent }
+\newlabel{fig:rmsebars}{{5}{9}{RMSE tracking error across all five operating scenarios (values from Table~\ref {tab:absolute})}{figure.caption.17}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Chattering index across scenarios (values from Table~\ref {tab:absolute}): CNN-adaptive SMC yields the largest reductions under noise and combined uncertainty.}}{9}{figure.caption.18}\protected@file@percent }
+\newlabel{fig:chatteringbars}{{6}{9}{Chattering index across scenarios (values from Table~\ref {tab:absolute}): CNN-adaptive SMC yields the largest reductions under noise and combined uncertainty}{figure.caption.18}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Improvement heatmap of CNN-adaptive SMC over classical SMC (\%). Green = adaptive better; red = adaptive worse. The noise/final-error cell reflects the intentional smoothness--accuracy trade-off of Eq.~\eqref  {eq:uub}.}}{10}{figure.caption.19}\protected@file@percent }
+\newlabel{fig:heatmap}{{7}{10}{Improvement heatmap of CNN-adaptive SMC over classical SMC (\%). Green = adaptive better; red = adaptive worse. The noise/final-error cell reflects the intentional smoothness--accuracy trade-off of Eq.~\eqref {eq:uub}}{figure.caption.19}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Multi-controller comparison across five controllers and four scenario/metric pairs (lower is better). CNN-adaptive and oracle presets achieve the largest reductions; RL is competitive under combined uncertainty.}}{10}{figure.caption.20}\protected@file@percent }
+\newlabel{fig:multicontroller}{{8}{10}{Multi-controller comparison across five controllers and four scenario/metric pairs (lower is better). CNN-adaptive and oracle presets achieve the largest reductions; RL is competitive under combined uncertainty}{figure.caption.20}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces Screenshot of the live web-based 3D digital twin during a combined-scenario run (React + Three.js frontend, FastAPI WebSocket backend): control panel with presentation presets on the left, hospital-corridor 3D scene with the robot's trajectory trail on the right.}}{11}{figure.caption.24}\protected@file@percent }
+\newlabel{fig:twin}{{9}{11}{Screenshot of the live web-based 3D digital twin during a combined-scenario run (React + Three.js frontend, FastAPI WebSocket backend): control panel with presentation presets on the left, hospital-corridor 3D scene with the robot's trajectory trail on the right}{figure.caption.24}{}}
+\bibcite{utkin1992}{1}
+\bibcite{edwards1998}{2}
+\bibcite{shtessel2014}{3}
+\bibcite{slotine1991}{4}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Conclusions}{12}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Limitations.}{12}{section*.25}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Future Work.}{12}{section*.26}\protected@file@percent }
+\bibcite{lin2006}{5}
+\bibcite{ge2004}{6}
+\bibcite{lecun2015}{7}
+\bibcite{levine2016}{8}
+\bibcite{nguyen2018}{9}
+\bibcite{liberzon2003}{10}
+\bibcite{ran2024}{11}
+\bibcite{demirtas2024}{12}
+\gdef \@abspage@last{14}

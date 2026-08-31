@@ -1,0 +1,29 @@
+\contentsline {section}{\numberline {1}Introduction}{2}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Problem Statement}{2}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Literature Review}{2}{subsection.1.2}%
+\contentsline {paragraph}{Sliding Mode Control for Mobile Robots.}{2}{section*.3}%
+\contentsline {paragraph}{Learning-Based Gain Adaptation.}{2}{section*.4}%
+\contentsline {paragraph}{CNN-Based Supervisory Control.}{2}{section*.5}%
+\contentsline {paragraph}{Digital Twins.}{3}{section*.6}%
+\contentsline {section}{\numberline {2}Methodology}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Differential-Drive Robot Model}{3}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Classical Sliding Mode Controller}{3}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}CNN Environment Classifier}{4}{subsection.2.3}%
+\contentsline {paragraph}{Dataset.}{4}{section*.7}%
+\contentsline {paragraph}{Architecture (EnvironmentCNN).}{4}{section*.9}%
+\contentsline {subsection}{\numberline {2.4}Adaptive Parameter Selection}{4}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.5}Reinforcement Learning Baseline (PPO)}{5}{subsection.2.5}%
+\contentsline {subsection}{\numberline {2.6}Stability Analysis}{5}{subsection.2.6}%
+\contentsline {subsection}{\numberline {2.7}Evaluation Protocol}{5}{subsection.2.7}%
+\contentsline {section}{\numberline {3}Results}{6}{section.3}%
+\contentsline {subsection}{\numberline {3.1}CNN Classification}{6}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Trajectory and Tracking Performance}{6}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Quantitative Comparison}{6}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Discussion}{7}{subsection.3.4}%
+\contentsline {paragraph}{Alternative adaptive controllers.}{7}{section*.21}%
+\contentsline {paragraph}{Per-scenario analysis.}{8}{section*.22}%
+\contentsline {paragraph}{Computational considerations.}{8}{section*.23}%
+\contentsline {subsection}{\numberline {3.5}Digital Twin Demonstration}{8}{subsection.3.5}%
+\contentsline {section}{\numberline {4}Conclusions}{12}{section.4}%
+\contentsline {paragraph}{Limitations.}{12}{section*.25}%
+\contentsline {paragraph}{Future Work.}{12}{section*.26}%

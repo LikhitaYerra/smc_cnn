@@ -1,0 +1,18 @@
+# Render Blueprint — free tier (512 MB RAM, no PyTorch)
+# Deploy: https://dashboard.render.com/blueprints → connect LikhitaYerra/smc_cnn
+services:
+  - type: web
+    name: smc-digital-twin
+    runtime: docker
+    plan: free
+    region: frankfurt
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: PYTHONPATH
+        value: /app
+      - key: LITE_MODE
+        value: "1"
+      - key: OMP_NUM_THREADS
+        value: "1"

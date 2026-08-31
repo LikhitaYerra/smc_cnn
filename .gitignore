@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# System files
+.DS_Store
+
+# Environment variables
+.env
+
+# Generated data
+data/generated/
+
+# Results
+results/
+
+# Saved models (keep deployment weights in repo)
+models/*.pt
+!models/cnn_environment_classifier.pt
+!models/rl_smc_agent.pt
+models/*.pth
+
+# Logs
+*.log
+
+# Node.js
+frontend/node_modules/

@@ -1,0 +1,59 @@
+project:
+  name: "CNN Adaptive Sliding Mode Control for Autonomous Robot"
+  version: "0.1.0"
+
+simulation:
+  dt: 0.01
+  total_time: 20.0
+
+robot:
+  wheel_base: 0.3
+  wheel_radius: 0.05
+  initial_state:
+    x: 0.0
+    y: 0.0
+    theta: 0.0
+
+controller:
+  smc:
+    lambda: 2.0
+    K: 1.5
+    phi: 0.1
+    max_linear_velocity: 1.0
+    max_angular_velocity: 2.0
+
+trajectory:
+  type: "circle"
+  radius: 2.0
+  angular_speed: 0.2
+
+noise:
+  enabled: false
+  position_std: 0.01
+  theta_std: 0.005
+
+disturbance:
+  enabled: false
+  start_time: 8.0
+  duration: 1.0
+  force_level: 0.2
+
+rl:
+  algorithm: "PPO"
+  learning_rate: 0.0003
+  gamma: 0.99
+  gae_lambda: 0.95
+  clip_eps: 0.2
+  rollout_steps: 2048
+  training_iterations: 100
+  model_path: "models/rl_smc_agent.pt"
+  reward:
+    alpha: 10.0
+    beta: 0.05
+    gamma: 0.1
+
+digital_twin:
+  api_host: "0.0.0.0"
+  api_port: 8000
+  frontend_port: 5173
+  default_controller: "cnn_adaptive"

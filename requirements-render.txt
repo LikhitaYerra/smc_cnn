@@ -1,0 +1,8 @@
+# Lightweight deps for Render free tier (no PyTorch)
+numpy
+scipy
+pyyaml
+fastapi
+uvicorn[standard]
+websockets
+pydantic
