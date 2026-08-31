@@ -1,0 +1,10 @@
+# Minimal runtime deps for the digital twin API (no training/plotting stack)
+numpy
+scipy
+pyyaml
+pillow
+gymnasium
+fastapi
+uvicorn[standard]
+websockets
+pydantic

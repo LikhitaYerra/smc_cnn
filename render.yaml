@@ -1,10 +1,16 @@
+# Render Blueprint — deploy at https://dashboard.render.com/blueprints
+# Requires Standard plan (2 GB RAM) because PyTorch exceeds the 512 MB free/starter limit.
 services:
   - type: web
     name: smc-digital-twin
     runtime: docker
-    plan: starter
+    plan: standard
     region: frankfurt
     healthCheckPath: /api/health
     envVars:
       - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: PYTHONPATH
+        value: /app
+      - key: OMP_NUM_THREADS
         value: "1"
