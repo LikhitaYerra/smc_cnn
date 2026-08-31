@@ -1,10 +1,10 @@
-# Render Blueprint — deploy at https://dashboard.render.com/blueprints
-# Requires Standard plan (2 GB RAM) because PyTorch exceeds the 512 MB free/starter limit.
+# Render Blueprint — free tier (512 MB RAM, no PyTorch)
+# Deploy: https://dashboard.render.com/blueprints → connect LikhitaYerra/smc_cnn
 services:
   - type: web
     name: smc-digital-twin
     runtime: docker
-    plan: standard
+    plan: free
     region: frankfurt
     healthCheckPath: /api/health
     envVars:
@@ -12,5 +12,7 @@ services:
         value: "1"
       - key: PYTHONPATH
         value: /app
+      - key: LITE_MODE
+        value: "1"
       - key: OMP_NUM_THREADS
         value: "1"

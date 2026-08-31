@@ -1,9 +1,7 @@
-# Minimal runtime deps for the digital twin API (no training/plotting stack)
+# Lightweight deps for Render free tier (no PyTorch)
 numpy
 scipy
 pyyaml
-pillow
-gymnasium
 fastapi
 uvicorn[standard]
 websockets

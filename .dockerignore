@@ -11,6 +11,7 @@ frontend/node_modules
 frontend/dist
 data/generated
 results
+models
 docs
 scripts
 *.md
