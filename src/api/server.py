@@ -11,18 +11,18 @@ from typing import Any
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
+from fastapi.responses import PlainTextResponse, JSONResponse, FileResponse
+from datetime import datetime
 
 from src.simulation.simulation_engine import SimulationConfig, SimulationEngine, CONTROLLER_MODES
 from src.simulation.comparison_runner import run_controller_comparison, run_dual_comparison, MODE_LABELS, MODE_COLORS
 from src.simulation.recording import save_recording, list_recordings, load_recording
 from src.simulation.export import export_metrics_csv, export_comparison_csv
 from src.runtime.lite_mode import is_lite_mode
-from fastapi.responses import PlainTextResponse, JSONResponse
-from datetime import datetime
 
 PRESENTATION_PRESETS = [
     {
@@ -144,6 +144,12 @@ def _config_from_dict(msg: dict) -> SimulationConfig:
         desired_speed=msg.get("desired_speed", 0.3),
         simulation_speed=max(0.5, min(msg.get("simulation_speed", 1.0), 10.0)),
     )
+
+
+@app.get("/health")
+async def render_health():
+    """Render health check — must not be shadowed by static file serving."""
+    return {"status": "ok", "lite_mode": is_lite_mode()}
 
 
 @app.get("/api/health")
@@ -522,8 +528,27 @@ async def websocket_simulation(websocket: WebSocket):
             active_connections.remove(websocket)
 
 
-frontend_dist = os.path.join(
-    os.path.dirname(__file__), "../../frontend/dist"
+frontend_dist = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "../../frontend/dist")
 )
+frontend_index = os.path.join(frontend_dist, "index.html")
+assets_dir = os.path.join(frontend_dist, "assets")
+
 if os.path.isdir(frontend_dist):
-    app.mount("/", StaticFiles(directory=frontend_dist, html=True), name="frontend")
+    if os.path.isdir(assets_dir):
+        app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
+
+    @app.get("/")
+    async def serve_index():
+        return FileResponse(frontend_index)
+
+    @app.get("/{path:path}")
+    async def serve_spa(path: str):
+        # Never intercept API or WebSocket paths — StaticFiles at "/" was breaking both on Render.
+        if path.startswith("api/") or path.startswith("ws/"):
+            raise HTTPException(status_code=404, detail="Not found")
+
+        candidate = os.path.join(frontend_dist, path)
+        if os.path.isfile(candidate):
+            return FileResponse(candidate)
+        return FileResponse(frontend_index)
