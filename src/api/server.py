@@ -532,11 +532,8 @@ frontend_dist = os.path.abspath(
     os.path.join(os.path.dirname(__file__), "../../frontend/dist")
 )
 frontend_index = os.path.join(frontend_dist, "index.html")
-assets_dir = os.path.join(frontend_dist, "assets")
 
 if os.path.isdir(frontend_dist):
-    if os.path.isdir(assets_dir):
-        app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
 
     @app.get("/")
     async def serve_index():
@@ -544,11 +541,12 @@ if os.path.isdir(frontend_dist):
 
     @app.get("/{path:path}")
     async def serve_spa(path: str):
-        # Never intercept API or WebSocket paths — StaticFiles at "/" was breaking both on Render.
         if path.startswith("api/") or path.startswith("ws/"):
             raise HTTPException(status_code=404, detail="Not found")
 
         candidate = os.path.join(frontend_dist, path)
         if os.path.isfile(candidate):
             return FileResponse(candidate)
+        if path.startswith("assets/"):
+            raise HTTPException(status_code=404, detail="Asset not found")
         return FileResponse(frontend_index)
